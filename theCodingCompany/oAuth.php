@@ -113,6 +113,17 @@ trait oAuth
     }
     
     /**
+     * Set app config
+     * @author Green_Footballs
+     */
+    public function setAppConfig($config) {
+        if (is_array($config)) {
+            $this->app_config = $config;
+        }
+    }
+
+
+    /**
      * Set the correct domain name
      * @param string $domainname
      */
@@ -180,6 +191,29 @@ trait oAuth
             
             //Save our token info
             return $this->_handle_bearer($token_info);
+        }
+        return false;
+    }
+
+    /**
+     * Revoke access token
+     * @author Green_Footballs
+     */
+    public function revokeAccessToken() {
+
+        if (is_array($this->credentials) && isset($this->credentials["client_id"])) {
+
+            //Kill the current access token
+            $http = HttpRequest::Instance("https://{$this->mastodon_api_url}");
+            return $http::Post(
+                "oauth/revoke",
+                array(
+                    "client_id"     => $this->credentials["client_id"],
+                    "client_secret" => $this->credentials["client_secret"],
+                    "token"         => $this->credentials["bearer"],
+                ),
+                $this->headers
+            );
         }
         return false;
     }
