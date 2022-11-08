@@ -12,6 +12,9 @@ PHP Library for Mastodon REST API
 * Get user status
 * Post status update
 
+Additions in this fork:
+1) setAppConfig()
+2) revokeAccessToken()
 
 ## Installation using Composer
 
